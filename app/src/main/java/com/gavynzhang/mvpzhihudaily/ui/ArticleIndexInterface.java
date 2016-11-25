@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface ArticleIndexInterface {
-    void showArticleIndex(List<ArticleIndex> articleIndices);
+    void showArticleIndex(String jsonData);
 }

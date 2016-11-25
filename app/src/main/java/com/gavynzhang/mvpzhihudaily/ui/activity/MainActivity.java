@@ -18,8 +18,9 @@ public class MainActivity extends BaseActivity implements ArticleIndexInterface 
         setContentView(R.layout.activity_main);
     }
 
+
     @Override
-    public void showArticleIndex(List<ArticleIndex> articleIndices) {
+    public void showArticleIndex(String jsonData) {
 
     }
 }
