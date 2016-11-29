@@ -6,7 +6,12 @@ package com.gavynzhang.mvpzhihudaily.model.entities;
 
 public class JsonAndRequestTime {
     private String jsonData;
-    private String requestTime;
+    private long requestTime;
+
+    public JsonAndRequestTime(){
+        this.jsonData = "";
+        this.requestTime = 0;
+    }
 
     public String getJsonData() {
         return jsonData;
@@ -16,11 +21,11 @@ public class JsonAndRequestTime {
         this.jsonData = jsonData;
     }
 
-    public String getRequestTime() {
+    public long getRequestTime() {
         return requestTime;
     }
 
-    public void setRequestTime(String requestTime) {
+    public void setRequestTime(long requestTime) {
         this.requestTime = requestTime;
     }
 }
