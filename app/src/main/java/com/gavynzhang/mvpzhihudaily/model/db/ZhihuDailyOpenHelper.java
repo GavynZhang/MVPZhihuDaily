@@ -11,7 +11,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ZhihuDailyOpenHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_LATEST = "create table latest(date text," +
-            "id integer primary kay autoincrement," +
+            "id integer primary key autoincrement," +
+            "json text)";
+
+    public static final String CREATE_BEFORE = "create table before(date text," +
+            "id integer primary key autoincrement," +
             "json text)";
 
     public ZhihuDailyOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -22,6 +26,7 @@ public class ZhihuDailyOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_LATEST);
+        db.execSQL(CREATE_BEFORE);
     }
 
     @Override

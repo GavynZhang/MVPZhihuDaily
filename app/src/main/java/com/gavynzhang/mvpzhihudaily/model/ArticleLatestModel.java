@@ -27,12 +27,24 @@ public class ArticleLatestModel {
     private ArticleIndexPresenterInterface mArticleIndexPresenter;
 
     SharedPreferences sharedPreferences = MyApplication.getContext().getSharedPreferences("latestJsonData",Context.MODE_PRIVATE);
+
+    /**
+     * 将要返回的数据
+     */
     final JsonAndRequestTime jsonAndRequestTime = new JsonAndRequestTime();
 
+    /**
+     * 初始化presenter的引用
+     *
+     * @param articleIndexPresenterInterface 持有的presenter的引用
+     */
     public ArticleLatestModel(ArticleIndexPresenterInterface articleIndexPresenterInterface){
         this.mArticleIndexPresenter = articleIndexPresenterInterface;
     }
 
+    /**
+     * @return 当本地数据判定为未过期时，返回本地的数据
+     */
     public JsonAndRequestTime loadJson() {
 
         if (TimeUtils.getCurTimeMills() - sharedPreferences.getLong("requestTime", 0) < ConstData.TIME_OVERRIDE
@@ -45,30 +57,45 @@ public class ArticleLatestModel {
         }else if (!AndroidStateUtils.isNetWorkAvailable()) {
             loadFromSharedPreference();
         }
-        else{
+        else {
             //本地没有数据或者数据超时
-            HttpUtil.sendHttpRequest(API.LATEST, new HttpCallBackListener() {
-                @Override
-                public void onFinish(String response) {
-                    LogUtils.d(CLASS_NAME, "Load From Internet, and request response is: " + response);
-
-                    jsonAndRequestTime.setJsonData(response);
-                    jsonAndRequestTime.setRequestTime(TimeUtils.getCurTimeMills());
-                    mArticleIndexPresenter.loadSuccess(jsonAndRequestTime);
-                    saveJson(jsonAndRequestTime);
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    mArticleIndexPresenter.loadError(e);
-                }
-            });
+            loadFromInternet();
         }
-
 
         return null;
     }
 
+    /**
+     * 获取最新的数据
+     */
+    public void loadLatestJson(){
+        loadFromInternet();
+    }
+
+    /**
+     * 从网络上请求数据
+     */
+    private void loadFromInternet(){
+        HttpUtil.sendHttpRequest(API.LATEST, new HttpCallBackListener() {
+            @Override
+            public void onFinish(String response) {
+                LogUtils.d(CLASS_NAME, "Load From Internet, and request response is: " + response);
+                jsonAndRequestTime.setJsonData(response);
+                jsonAndRequestTime.setRequestTime(TimeUtils.getCurTimeMills());
+                mArticleIndexPresenter.loadSuccess(jsonAndRequestTime);
+                saveJson(jsonAndRequestTime);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                mArticleIndexPresenter.loadError(e);
+            }
+        });
+    }
+
+    /**
+     * 从本地加载数据
+     */
     private void loadFromSharedPreference(){
 
         LogUtils.d(CLASS_NAME,"Load From SharedPreference, and requestTime is : "+sharedPreferences.getLong("requestTime",0));
@@ -84,6 +111,11 @@ public class ArticleLatestModel {
         mArticleIndexPresenter.loadSuccess(jsonAndRequestTime);
     }
 
+    /**
+     * 保存数据到本地
+     *
+     * @param jsonAndRequestTime 需要保存的数据
+     */
     private void saveJson(JsonAndRequestTime jsonAndRequestTime) {
         SharedPreferences.Editor editor = MyApplication.getContext().getSharedPreferences("latestJsonData", Context.MODE_PRIVATE).edit();
         editor.putString("jsonData",jsonAndRequestTime.getJsonData());

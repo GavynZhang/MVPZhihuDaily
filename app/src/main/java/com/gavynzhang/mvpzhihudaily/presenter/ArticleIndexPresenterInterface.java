@@ -1,5 +1,6 @@
 package com.gavynzhang.mvpzhihudaily.presenter;
 
+import com.gavynzhang.mvpzhihudaily.model.entities.JsonAndDate;
 import com.gavynzhang.mvpzhihudaily.model.entities.JsonAndRequestTime;
 
 /**
@@ -8,5 +9,6 @@ import com.gavynzhang.mvpzhihudaily.model.entities.JsonAndRequestTime;
 
 public interface ArticleIndexPresenterInterface {
     void loadSuccess(JsonAndRequestTime jsonAndRequestTime);
+    void loadBeforeSuccess(JsonAndDate jsonAndDate);
     void loadError(Exception e);
 }

@@ -1,6 +1,8 @@
 package com.gavynzhang.mvpzhihudaily.model.db;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -27,5 +29,25 @@ public class ZhihuDailyDB {
 
     public void saveLatestJson(String jsonData){
 
+    }
+
+    public void saveBeforeJson(String jsonData, String date){
+        if (jsonData!=null){
+            ContentValues values = new ContentValues();
+            values.put("date",date);
+            values.put("json",jsonData);
+            db.insert("before",null,values);
+        }
+    }
+
+    public String loadBeforeJson(String date){
+        String jsonData = null;
+        Cursor cursor = db.query("before",null,"date="+date,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do{
+                jsonData = cursor.getString(cursor.getColumnIndex("json"));
+            }while(cursor.moveToNext());
+        }
+        return jsonData;
     }
 }

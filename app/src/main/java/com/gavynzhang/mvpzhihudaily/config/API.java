@@ -29,7 +29,7 @@ public class API {
      */
     public static String getBEFORE(String date){
         String BEFORE = "http://news.at.zhihu.com/api/4/news/before/";
-        return BEFORE +date;
+        return BEFORE + date;
     }
 
     /**

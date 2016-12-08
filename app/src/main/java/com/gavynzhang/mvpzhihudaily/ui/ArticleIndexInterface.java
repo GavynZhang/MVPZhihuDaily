@@ -1,6 +1,7 @@
 package com.gavynzhang.mvpzhihudaily.ui;
 
 import com.gavynzhang.mvpzhihudaily.model.entities.ArticleIndex;
+import com.gavynzhang.mvpzhihudaily.model.entities.JsonAndDate;
 
 import java.util.List;
 
@@ -9,5 +10,6 @@ import java.util.List;
  */
 
 public interface ArticleIndexInterface {
-    void showArticleIndex(String jsonData);
+    void showArticleLatestIndex(String jsonData);
+    void showArticleBeforeIndex(JsonAndDate jsonAndDate);
 }
